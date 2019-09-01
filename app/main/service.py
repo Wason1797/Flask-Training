@@ -13,29 +13,34 @@ urls = Blueprint('urls', __name__)
 
 @urls.route('/ingredient', methods=POST)
 def create_ingredient():
-    ingredient_serializer = IngredientSerializer()
-    new_ingredient = ingredient_serializer.load(request.json)
-    db.session.add(new_ingredient)
-    db.session.commit()
-    return Response(json.dumps(request.json), status=201,  mimetype='application/json')
+    try:
+        ingredient_serializer = IngredientSerializer()
+        new_ingredient = ingredient_serializer.load(request.json)
+        db.session.add(new_ingredient)
+        db.session.commit()
+        return ingredient_serializer.jsonify(new_ingredient), 201
+    except Exception:
+        return Response(status=400)
 
 
 @urls.route('/ingredient', methods=PUT)
 def update_ingredient():
-    ingredient = Ingredient.query.get(request.json.get('_id'))
-    ingredient.name = request.json.get('name') or ingredient.name
-    ingredient.price = request.json.get('price') or ingredient.price
-    db.session.commit()
-
-    ingredient_serializer = IngredientSerializer()
-    return ingredient_serializer.jsonify(ingredient)
+    try:
+        ingredient = Ingredient.query.get(request.json.get('_id'))
+        ingredient.name = request.json.get('name') or ingredient.name
+        ingredient.price = request.json.get('price') or ingredient.price
+        db.session.commit()
+        ingredient_serializer = IngredientSerializer()
+        return ingredient_serializer.jsonify(ingredient)
+    except Exception:
+        return Response(status=400)
 
 
 @urls.route('/ingredient/id/<_id>', methods=GET)
 def get_ingredient_by_id(_id):
     ingredient = Ingredient.query.get(_id)
     ingredient_serializer = IngredientSerializer()
-    return ingredient_serializer.jsonify(ingredient)
+    return ingredient_serializer.jsonify(ingredient) if ingredient else Response(status=404)
 
 
 @urls.route('/ingredient', methods=GET)
