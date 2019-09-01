@@ -1,8 +1,8 @@
 
 def get_all(Model, Serializer):
     serializer = Serializer(many=True)
-    sizes = Model.query.all()
-    result = serializer.dump(sizes)
+    _objects = Model.query.all()
+    result = serializer.dump(_objects)
     return result
 
 

@@ -1,5 +1,5 @@
 from .plugins import ma
-from .models import Ingredient, Size, Order
+from .models import Ingredient, Size, Order, OrderDetail
 
 
 class IngredientSerializer(ma.ModelSchema):
@@ -16,9 +16,21 @@ class SizeSerializer(ma.ModelSchema):
         fields = ('_id', 'name', 'price')
 
 
+class OrderDetailSerializer(ma.ModelSchema):
+
+    ingredient = ma.Nested(IngredientSerializer)
+
+    class Meta:
+        model = OrderDetail
+        fields = (
+            'ingredient_price',
+            'ingredient'
+        )
+
+
 class OrderSerializer(ma.ModelSchema):
     size = ma.Nested(SizeSerializer)
-    ingredients = ma.Nested(IngredientSerializer, many=True)
+    detail = ma.Nested(OrderDetailSerializer, many=True)
 
     class Meta:
         model = Order
@@ -31,5 +43,5 @@ class OrderSerializer(ma.ModelSchema):
             'date',
             'total_price',
             'size',
-            'ingredients'
+            'detail'
         )

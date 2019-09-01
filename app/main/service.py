@@ -87,7 +87,7 @@ def create_order():
     client_dni = request.json.get('client_dni')
     client_address = request.json.get('client_address')
     client_phone = request.json.get('client_phone')
-    size_id = request.json.get('size_id')
+    size_id = int(request.json.get('size'))
     ingredients = request.json.get('ingredients')
 
     new_order = Order(client_name=client_name,
@@ -100,7 +100,7 @@ def create_order():
     db.session.flush()
     db.session.refresh(new_order)
 
-    db_ingredients = [Ingredient.query.get(ingredient_id) for ingredient_id in ingredients] if isinstance(ingredients, list) else []
+    db_ingredients = [Ingredient.query.get(int(ingredient_id)) for ingredient_id in ingredients] if isinstance(ingredients, list) else []
 
     new_order.total_price = calculate_order_price(new_order, db_ingredients)
 
