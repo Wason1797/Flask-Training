@@ -12,7 +12,7 @@ def calculate_order_price(order, ingredients):
 
     total_ingredient_price = sum(ingredient.price for ingredient in ingredients)
 
-    return size_price + total_ingredient_price
+    return round((size_price + total_ingredient_price), 2)
 
 
 def check_required_keys(keys: tuple, _element: dict):
