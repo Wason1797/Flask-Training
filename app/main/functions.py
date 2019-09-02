@@ -13,3 +13,7 @@ def calculate_order_price(order, ingredients):
     total_ingredient_price = sum(ingredient.price for ingredient in ingredients)
 
     return size_price + total_ingredient_price
+
+
+def check_required_keys(keys: tuple, _element: dict):
+    return all(_element.get(key) for key in keys)

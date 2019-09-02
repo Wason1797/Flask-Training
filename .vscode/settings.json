@@ -4,5 +4,11 @@
     "python.linting.enabled": true,
     "python.analysis.disabled": [
         "inherit-non-class"
-    ]
+    ],
+    "python.testing.pytestArgs": [
+        "app"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.pytestEnabled": true
 }

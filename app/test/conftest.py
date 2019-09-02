@@ -1,13 +1,13 @@
 import pytest
 import tempfile
 import os
-from ..main.models import Order, OrderDetail, Ingredient, Size
 
 
 @pytest.fixture
 def app():
     from ..main import create_app, register_blueprints
     from ..main.plugins import ma, db
+    from app.main.models import Order, OrderDetail, Ingredient, Size
 
     db_fd, dbpath = tempfile.mkstemp()
 
