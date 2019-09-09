@@ -21,7 +21,7 @@ def create_ingredient():
     except Exception:
         return Response(status=400)
 
-
+# Mantenimiento adaptivo, Función no implementada
 @urls.route('/ingredient', methods=PUT)
 def update_ingredient():
     try:
@@ -34,7 +34,7 @@ def update_ingredient():
     except Exception:
         return Response(status=400)
 
-
+# Mantenimiento Correctivo, El ingrediente siempre retorna vacio
 @urls.route('/ingredient/id/<_id>', methods=GET)
 def get_ingredient_by_id(_id):
     ingredient = Ingredient.query.get(_id)
@@ -62,7 +62,7 @@ def create_size():
     except Exception:
         return Response(status=400)
 
-
+# Mantenimiento Adaptivo, Función no implementada
 @urls.route('/size', methods=PUT)
 def update_size():
     try:
@@ -82,7 +82,7 @@ def get_sizes():
     result = get_all(Size, SizeSerializer)
     return jsonify(result)
 
-
+# Mantenimiento Correctivo la variable id no fue nombrada de manera correcta
 @urls.route('/size/id/<_id>', methods=GET)
 def get_size_by_id(_id):
     size = Size.query.get(_id)
@@ -98,8 +98,9 @@ def create_order():
     try:
         if check_required_keys(('client_name', 'client_dni', 'client_address', 'client_phone', 'size'), request.json):
 
+            # Mantenimiento Correctivo, Los campos no estaran seteados
             client_name = request.json.get('client_name')
-            client_dni = request.json.get('client_dni')
+            client_dni = request.json.get('client_dni')  # Mantenimiento Adaptivo, Validar cedula del cliente
             client_address = request.json.get('client_address')
             client_phone = request.json.get('client_phone')
             size_id = int(request.json.get('size'))
@@ -118,6 +119,7 @@ def create_order():
             db_ingredients = [Ingredient.query.get(int(ingredient_id))
                               for ingredient_id in ingredients] if isinstance(ingredients, list) else []
 
+            # Manteinimiento Correctivo, El precio no se calcula adecuadamente
             new_order.total_price = calculate_order_price(new_order, db_ingredients)
 
             db.session.add_all([OrderDetail(order_id=new_order._id,
@@ -139,7 +141,7 @@ def get_orders():
     result = get_all(Order, OrderSerializer)
     return jsonify(result)
 
-
+# Mantenimiento Adaptivo, Implementar get_order_by_id
 @urls.route('/order/id/<_id>', methods=GET)
 def get_order_by_id(_id):
     order = Order.query.get(_id)
